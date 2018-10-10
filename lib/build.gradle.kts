@@ -14,11 +14,11 @@ plugins {
 }
 
 repositories {
+    mavenLocal()
     jcenter()
     google()
     maven(url = "http://dl.bintray.com/kotlin/kotlin-eap")
     maven(url = "https://kotlin.bintray.com/kotlinx")
-    mavenLocal()
 }
 
 group = "org.kodein.sample.pokedex"
@@ -26,11 +26,10 @@ version = "1.0"
 
 val kotlinxSerializationRuntimeVersion = "0.8.2-rc13"
 val kotlinxCoroutinesVersion = "0.30.2-eap13"
-val kodeinDIVersion = "5.3.0"
+val kodeinDIVersion = "5.4.0"
 
 android {
     compileSdkVersion(27)
-    buildToolsVersion("27.0.3")
 
     defaultConfig {
         minSdkVersion(15)
@@ -105,7 +104,7 @@ kotlin {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:$kotlinxSerializationRuntimeVersion")
-                api("org.kodein.di:kodein-di-erased-common:$kodeinDIVersion")
+                api("org.kodein.di:kodein-di-erased:$kodeinDIVersion")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:$kotlinxCoroutinesVersion")
             }
             languageSettings.apply {
@@ -124,7 +123,7 @@ kotlin {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$kotlinxSerializationRuntimeVersion")
-                api("org.kodein.di:kodein-di-erased-jvm:$kodeinDIVersion")
+//                api("org.kodein.di:kodein-di-erased-jvm:$kodeinDIVersion")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion")
             }
         }
@@ -158,7 +157,7 @@ kotlin {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:$kotlinxSerializationRuntimeVersion")
-                api("org.kodein.di:kodein-di-erased-js:$kodeinDIVersion")
+//                api("org.kodein.di:kodein-di-erased-js:$kodeinDIVersion")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:$kotlinxCoroutinesVersion")
             }
         }
@@ -176,7 +175,7 @@ kotlin {
         val allNativeMain = create("allNativeMain") {
             dependencies {
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-native:$kotlinxSerializationRuntimeVersion-local")
-                api("org.kodein.di:kodein-di-erased-native:$kodeinDIVersion")
+//                api("org.kodein.di:kodein-di-erased-native:$kodeinDIVersion")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core-native:$kotlinxCoroutinesVersion")
             }
         }
