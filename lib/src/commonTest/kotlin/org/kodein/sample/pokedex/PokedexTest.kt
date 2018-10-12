@@ -5,7 +5,7 @@ import org.kodein.di.erased.M
 import org.kodein.di.erased.bind
 import org.kodein.di.erased.instance
 import org.kodein.sample.pokedex.data.Context
-import org.kodein.sample.pokedex.data.Evolution
+import org.kodein.sample.pokedex.data.Evolutions
 import org.kodein.sample.pokedex.data.PokedexDownloader
 import org.kodein.sample.pokedex.data.Pokemon
 import org.kodein.sample.pokedex.pres.PokemonListPresenter
@@ -51,8 +51,8 @@ class PokedexTest {
                 "07:00",
                 listOf(1.2, 1.6),
                 listOf("Fire", "Ice", "Flying", "Psychic"),
-                listOf(Evolution("001","Bulbasaur")),
-                listOf(Evolution("003","Venusaur"))
+                listOf(Evolutions("001","Bulbasaur")),
+                listOf(Evolutions("003","Venusaur"))
             ),
             pokedex.pokemons[1]
         )

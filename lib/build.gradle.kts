@@ -1,9 +1,13 @@
 import com.moowork.gradle.node.npm.NpmTask
 import com.moowork.gradle.node.task.NodeTask
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinJsCompilation
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeCompilation
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinOnlyTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.NativeOutputKind
 import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
+import org.jetbrains.kotlin.gradle.tasks.KotlinNativeCompile
 import org.jetbrains.kotlin.incremental.isJavaFile
+import org.jetbrains.kotlin.konan.target.CompilerOutputKind
 
 plugins {
     id("com.android.library")
@@ -96,8 +100,11 @@ kotlin {
 
         tasks["${name}Test"].dependsOn(runTests)
     })
-    targets.add(presets.findByName("linuxX64")!!.createTarget("linux"))
-//    targets.add(presets.findByName("macosX64")!!.createTarget("macos"))
+//    targets.add(presets.findByName("linuxX64")!!.createTarget("linux"))
+    targets.add(presets.findByName("macosX64")!!.createTarget("macos"))
+    targets.add(presets.findByName("iosX64")!!.createTarget("iosSim").apply {
+        (compilations["main"] as KotlinNativeCompilation).outputKind(NativeOutputKind.FRAMEWORK)
+    })
 
     sourceSets.apply {
         val commonMain = getByName("commonMain") {
@@ -120,6 +127,7 @@ kotlin {
         }
 
         val allJvmMain = create("allJvmMain") {
+            dependsOn(commonMain)
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$kotlinxSerializationRuntimeVersion")
@@ -173,22 +181,39 @@ kotlin {
         }
 
         val allNativeMain = create("allNativeMain") {
+            dependsOn(commonMain)
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-native:$kotlinxSerializationRuntimeVersion-local")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-native:$kotlinxSerializationRuntimeVersion")
 //                api("org.kodein.di:kodein-di-erased-native:$kodeinDIVersion")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core-native:$kotlinxCoroutinesVersion")
             }
         }
 
-        getByName("linuxMain") {
+        getByName("iosSimMain") {
             dependsOn(allNativeMain)
+        }
+
+        val allNativeDesktopMain = create("allNativeDesktopMain") {
+            dependsOn(allNativeMain)
+        }
+
+//        getByName("linuxMain") {
+//            dependsOn(allNativeDesktopMain)
+//        }
+
+        getByName("macosMain") {
+            dependsOn(allNativeDesktopMain)
         }
 
         val allNativeTest = create("allNativeTest") {
             dependsOn(commonTest)
         }
 
-        getByName("linuxTest") {
+//        getByName("linuxTest") {
+//            dependsOn(allNativeTest)
+//        }
+
+        getByName("macosTest") {
             dependsOn(allNativeTest)
         }
 
@@ -223,7 +248,8 @@ repositories.whenObjectAdded {
 
 afterEvaluate {
     (tasks["nodejsRunTests"] as NodeTask).setEnvironment(mapOf("pokedex" to "$rootDir/src/main/res/raw/pokedex.json"))
-    (tasks["linuxTest"] as RunTestExecutable).environment("pokedex", "$rootDir/src/main/res/raw/pokedex.json")
+//    (tasks["linuxTest"] as RunTestExecutable).environment("pokedex", "$rootDir/src/main/res/raw/pokedex.json")
+    (tasks["macosTest"] as RunTestExecutable).environment("pokedex", "$rootDir/src/main/res/raw/pokedex.json")
 
     tasks.withType<Test>().forEach {
         it.testLogging {

@@ -23,4 +23,12 @@ data class Pokemon(
     val weaknesses: List<String>,
     @Optional @SerialName("prev_evolution") val evolutionsPrev: List<Evolution>? = null,
     @Optional @SerialName("next_evolution") val evolutionsNext: List<Evolution>? = null
-)
+) {
+
+    @Serializable
+    data class Evolution(
+            val num: String,
+            val name: String
+    )
+
+}

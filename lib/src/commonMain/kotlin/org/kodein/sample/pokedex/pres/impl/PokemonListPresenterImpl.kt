@@ -1,18 +1,28 @@
 package org.kodein.sample.pokedex.pres.impl
 
-import org.kodein.sample.pokedex.data.Pokedex
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import org.kodein.sample.pokedex.AppDispatcher
 import org.kodein.sample.pokedex.data.PokedexDownloader
-import org.kodein.sample.pokedex.pres.PokemonListPresenter
-import org.kodein.sample.pokedex.pres.PokemonListView
+import org.kodein.sample.pokedex.data.findById
+import org.kodein.sample.pokedex.pres.PokemonListMVP
 
-internal class PokemonListPresenterImpl(private val pokedex: PokedexDownloader, private val view: PokemonListView) : PokemonListPresenter {
 
-    override suspend fun start() {
-        view.displayList(pokedex.get().pokemons)
+internal class PokemonListPresenterImpl(private val pokedex: PokedexDownloader, arg: PokemonListMVP.Arg) : PokemonListMVP.Presenter {
+
+    private val view = arg.view
+
+    override fun start() {
+        GlobalScope.launch(AppDispatcher) {
+            view.displayList(pokedex.get().pokemons)
+        }
     }
 
-    override suspend fun pokemonSelected(id: Int) {
-        view.goToPokemonScreen(id)
+    override fun pokemonSelected(id: Int) {
+        GlobalScope.launch(AppDispatcher) {
+            val pokemon = pokedex.get().findById(id) ?: return@launch
+            view.goToPokemonScreen(pokemon.name, id)
+        }
     }
 
 }
