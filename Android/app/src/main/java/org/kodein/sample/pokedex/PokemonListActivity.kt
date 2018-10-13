@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,10 +18,9 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.closestKodein
 import org.kodein.di.erased.instance
 import org.kodein.sample.pokedex.data.Pokemon
-import org.kodein.sample.pokedex.pres.PokemonListPresenter
-import org.kodein.sample.pokedex.pres.PokemonListView
+import org.kodein.sample.pokedex.pres.PokemonListMVP
 
-class PokemonListActivity : AppCompatActivity(), KodeinAware, PokemonListView {
+class PokemonListActivity : AppCompatActivity(), KodeinAware, PokemonListMVP.View {
 
     inner class Adapter(val pokemons: List<Pokemon>) : RecyclerView.Adapter<Adapter.ViewHolder>() {
 
@@ -36,7 +34,7 @@ class PokemonListActivity : AppCompatActivity(), KodeinAware, PokemonListView {
         inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             fun bind(pokemon: Pokemon) {
                 Glide.with(itemView).load(pokemon.img).into(itemView.itemImage)
-                itemView.itemText.text = pokemon.name
+                itemView.pokName.text = pokemon.name
                 itemView.setOnClickListener {
                     GlobalScope.launch(Dispatchers.Main) { presenter.pokemonSelected(pokemon.id) }
                 }
@@ -46,13 +44,11 @@ class PokemonListActivity : AppCompatActivity(), KodeinAware, PokemonListView {
 
     override val kodein by closestKodein()
 
-    val presenter: PokemonListPresenter by instance(arg = (this as PokemonListView))
+    val presenter: PokemonListMVP.Presenter by instance(arg = PokemonListMVP.Arg(this))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list)
-
-        recyclerView.layoutManager = LinearLayoutManager(this)
 
         GlobalScope.launch(Dispatchers.Main) {
             presenter.start()
@@ -63,7 +59,7 @@ class PokemonListActivity : AppCompatActivity(), KodeinAware, PokemonListView {
         recyclerView.adapter = Adapter(pokemons)
     }
 
-    override fun goToPokemonScreen(id: Int) {
+    override fun goToPokemonScreen(name: String, id: Int) {
         startActivity(Intent(this, PokemonActivity::class.java).apply {
             putExtra("id", id)
         })

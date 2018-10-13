@@ -35,7 +35,7 @@ dependencies {
     implementation "org.kodein.di:kodein-di-framework-android-core:5.4.0"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:0.30.2-eap13"
 
-    implementation 'org.kodein.sample.pokedex:Pokedex-KMP-android-lib:1.0'
+    implementation 'org.kodein.sample.pokedex:Pokedex-KMP-android:1.0'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

@@ -1,0 +1,50 @@
+# Default ignored files
+/.idea/shelf/
+/.idea/workspace.xml
+
+# Project exclude paths
+/build/bin/
+/build/classes/
+/build/intermediates/aapt_friendly_merged_manifests/
+/build/intermediates/annotation_processor_list/
+/build/intermediates/annotations_typedef_file/
+/build/intermediates/annotations_zip/
+/build/intermediates/check-manifest/
+/build/intermediates/consumer_proguard_file/
+/build/intermediates/incremental/
+/build/intermediates/intermediate-jars/
+/build/intermediates/javac/
+/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes/
+/build/intermediates/jniLibs/
+/build/intermediates/library_and_local_jars_jni/
+/build/intermediates/library_assets/
+/build/intermediates/lint-cache/
+/build/intermediates/lint_jar/
+/build/intermediates/merged_manifests/
+/build/intermediates/packaged-classes/
+/build/intermediates/packaged_res/
+/build/intermediates/public_res/
+/build/intermediates/res/
+/build/intermediates/rs/
+/build/intermediates/shader_assets/
+/build/intermediates/shaders/
+/build/intermediates/symbols/
+/build/intermediates/transforms/
+/build/kotlin/
+/build/libs/
+/build/outputs/
+/build/processedResources/
+/build/publications/
+/build/reports/
+/build/test-js/
+/build/test-results/
+/build/tmp/
+
+# Datasource local storage ignored files
+/.idea/dataSources/
+dataSources.local.xml
+
+# Editor-based HTTP Client requests
+/.idea/httpRequests/
+rest-client.private.env.json
+http-client.private.env.json

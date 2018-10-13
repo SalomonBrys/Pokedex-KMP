@@ -15,8 +15,7 @@ internal class PokemonPresenterImpl(private val pokedex: PokedexDownloader, arg:
     private val view = arg.view
     private val pokemonId = arg.pokemonId
 
-    override fun start() {
-        GlobalScope.launch(AppDispatcher) {
+    override fun start() = GlobalScope.launch(AppDispatcher) {
             val pokedex = pokedex.get()
             val pokemon = pokedex.findById(pokemonId)
             if (pokemon != null)
@@ -30,13 +29,10 @@ internal class PokemonPresenterImpl(private val pokedex: PokedexDownloader, arg:
             else
                 view.close()
         }
-    }
 
-    override fun pokemonSelected(num: String) {
-        GlobalScope.launch(AppDispatcher) {
-            val pokemon = pokedex.get().findByNum(num) ?: return@launch
+    override fun pokemonSelected(id: Int) = GlobalScope.launch(AppDispatcher) {
+            val pokemon = pokedex.get().findById(id) ?: return@launch
             view.goToPokemonScreen(pokemon.name, pokemon.id)
         }
-    }
 
 }

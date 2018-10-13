@@ -1,5 +1,6 @@
 package org.kodein.sample.pokedex.pres
 
+import kotlinx.coroutines.Job
 import org.kodein.di.Kodein
 import org.kodein.di.bindings.BindingKodein
 import org.kodein.di.erased.bind
@@ -13,7 +14,7 @@ interface MVP<A: MVP.Arg<V>, P : MVP.Presenter, V : Any> {
     }
 
     interface Presenter {
-        fun start()
+        fun start(): Job
     }
 
 }

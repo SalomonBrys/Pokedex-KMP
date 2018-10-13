@@ -8,10 +8,7 @@ import org.kodein.sample.pokedex.data.Context
 import org.kodein.sample.pokedex.data.Evolutions
 import org.kodein.sample.pokedex.data.PokedexDownloader
 import org.kodein.sample.pokedex.data.Pokemon
-import org.kodein.sample.pokedex.pres.PokemonListPresenter
-import org.kodein.sample.pokedex.pres.PokemonListView
-import org.kodein.sample.pokedex.pres.PokemonPresenter
-import org.kodein.sample.pokedex.pres.PokemonView
+import org.kodein.sample.pokedex.pres.*
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -51,8 +48,8 @@ class PokedexTest {
                 "07:00",
                 listOf(1.2, 1.6),
                 listOf("Fire", "Ice", "Flying", "Psychic"),
-                listOf(Evolutions("001","Bulbasaur")),
-                listOf(Evolutions("003","Venusaur"))
+                listOf(Pokemon.Evolution("001","Bulbasaur")),
+                listOf(Pokemon.Evolution("003","Venusaur"))
             ),
             pokedex.pokemons[1]
         )
@@ -61,9 +58,9 @@ class PokedexTest {
     @Test
     fun PokemonListPresenter_should_display_list_on_start() = runTest {
         var listCount = 0
-        val view: PokemonListView = object : PokemonListView {
+        val view: PokemonListMVP.View = object : PokemonListMVP.View {
             override fun displayList(pokemons: List<Pokemon>) { listCount = pokemons.count() }
-            override fun goToPokemonScreen(id: Int) = throw IllegalStateException()
+            override fun goToPokemonScreen(name: String, id: Int) = throw IllegalStateException()
         }
 
         val kodein = Kodein {
@@ -71,9 +68,9 @@ class PokedexTest {
             bind() from instance(getTestContext())
         }
 
-        val presenter: PokemonListPresenter by kodein.instance(arg = view)
+        val presenter: PokemonListMVP.Presenter by kodein.instance(arg = PokemonListMVP.Arg(view))
 
-        presenter.start()
+        presenter.start().join()
 
         assertEquals(151, listCount)
     }
@@ -81,9 +78,9 @@ class PokedexTest {
     @Test
     fun PokemonListPresenter_should_go_to_selected_pokemon_on_select() = runTest {
         var goTo = 0
-        val view: PokemonListView = object : PokemonListView {
+        val view: PokemonListMVP.View = object : PokemonListMVP.View {
             override fun displayList(pokemons: List<Pokemon>) {}
-            override fun goToPokemonScreen(id: Int) { goTo = id }
+            override fun goToPokemonScreen(name: String, id: Int) { goTo = id }
         }
 
         val kodein = Kodein {
@@ -91,10 +88,10 @@ class PokedexTest {
             bind() from instance(getTestContext())
         }
 
-        val presenter: PokemonListPresenter by kodein.instance(arg = view)
+        val presenter: PokemonListMVP.Presenter by kodein.instance(arg = PokemonListMVP.Arg(view))
 
-        presenter.start()
-        presenter.pokemonSelected(42)
+        presenter.start().join()
+        presenter.pokemonSelected(42).join()
 
         assertEquals(42, goTo)
     }
@@ -102,9 +99,9 @@ class PokedexTest {
     @Test
     fun PokemonPresenter_should_display_pokemon_on_start() = runTest {
         var pokemonDisplayed: Pokemon? = null
-        val view: PokemonView = object : PokemonView {
-            override fun displayPokemon(pokemon: Pokemon) { pokemonDisplayed = pokemon }
-            override fun goToPokemonScreen(id: Int) = throw IllegalStateException()
+        val view: PokemonMVP.View = object : PokemonMVP.View {
+            override fun displayPokemon(pokemon: Pokemon, evolutions: Evolutions) { pokemonDisplayed = pokemon }
+            override fun goToPokemonScreen(name: String, id: Int) = throw IllegalStateException()
             override fun close() = throw IllegalStateException()
         }
 
@@ -113,9 +110,9 @@ class PokedexTest {
             bind() from instance(getTestContext())
         }
 
-        val presenter: PokemonPresenter by kodein.instance(arg = M(42, view))
+        val presenter: PokemonMVP.Presenter by kodein.instance(arg = PokemonMVP.Arg(view, 42))
 
-        presenter.start()
+        presenter.start().join()
 
         assertEquals("Golbat", pokemonDisplayed!!.name)
     }
@@ -123,9 +120,9 @@ class PokedexTest {
     @Test
     fun PokemonPresenter_should_go_to_selected_pokemon_on_select() = runTest {
         var goTo = 0
-        val view: PokemonView = object : PokemonView {
-            override fun displayPokemon(pokemon: Pokemon) {}
-            override fun goToPokemonScreen(id: Int) { goTo = id }
+        val view: PokemonMVP.View = object : PokemonMVP.View {
+            override fun displayPokemon(pokemon: Pokemon, evolutions: Evolutions) {}
+            override fun goToPokemonScreen(name: String, id: Int) { goTo = id }
             override fun close() = throw IllegalStateException()
         }
 
@@ -134,10 +131,10 @@ class PokedexTest {
             bind() from instance(getTestContext())
         }
 
-        val presenter: PokemonPresenter by kodein.instance(arg = M(21, view))
+        val presenter: PokemonMVP.Presenter by kodein.instance(arg = PokemonMVP.Arg(view, 21))
 
-        presenter.start()
-        presenter.pokemonSelected("042")
+        presenter.start().join()
+        presenter.pokemonSelected("042").join()
 
         assertEquals(42, goTo)
     }
@@ -145,9 +142,9 @@ class PokedexTest {
     @Test
     fun PokemonPresenter_should_close_on_invalid_id() = runTest {
         var closed = false
-        val view: PokemonView = object : PokemonView {
-            override fun displayPokemon(pokemon: Pokemon) = throw IllegalStateException()
-            override fun goToPokemonScreen(id: Int) = throw IllegalStateException()
+        val view: PokemonMVP.View = object : PokemonMVP.View {
+            override fun displayPokemon(pokemon: Pokemon, evolutions: Evolutions) = throw IllegalStateException()
+            override fun goToPokemonScreen(name: String, id: Int) = throw IllegalStateException()
             override fun close() { closed = true }
         }
 
@@ -156,9 +153,9 @@ class PokedexTest {
             bind() from instance(getTestContext())
         }
 
-        val presenter: PokemonPresenter by kodein.instance(arg = M(2142, view))
+        val presenter: PokemonMVP.Presenter by kodein.instance(arg = PokemonMVP.Arg(view, 2142))
 
-        presenter.start()
+        presenter.start().join()
 
         assertTrue(closed)
     }

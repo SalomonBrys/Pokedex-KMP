@@ -8,11 +8,13 @@ pluginManagement {
                 "kotlinx-serialization" -> useModule("org.jetbrains.kotlin:kotlin-serialization:$kotlinVersion")
                 "com.moowork.node" -> useModule("com.moowork.gradle:gradle-node-plugin:1.2.0")
                 "com.android.library" -> useModule("com.android.tools.build:gradle:3.2.0")
+                "com.github.salomonbrys.gradle.kjs.js-tests" -> useModule("com.github.salomonbrys.gradle.kjs:js-tests:1.0.0")
             }
         }
     }
 
     repositories {
+        mavenLocal()
         jcenter()
         google()
         maven(url = "http://dl.bintray.com/kotlin/kotlin-eap")
