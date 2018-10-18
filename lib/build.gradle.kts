@@ -60,11 +60,13 @@ kotlin {
         (compilations["main"] as KotlinNativeCompilation).outputKind(NativeOutputKind.FRAMEWORK)
     })
 
+    val runtimeVersion = kotlinxSerializationRuntimeVersion + if (devHost != "macos") "-local" else ""
+
     sourceSets.apply {
         val commonMain = getByName("commonMain") {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-common")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:$kotlinxSerializationRuntimeVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-common:$runtimeVersion")
                 api("org.kodein.di:kodein-di-erased:$kodeinDIVersion")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core-common:$kotlinxCoroutinesVersion")
             }
@@ -84,7 +86,7 @@ kotlin {
             dependsOn(commonMain)
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$kotlinxSerializationRuntimeVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:$runtimeVersion")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion")
             }
         }
@@ -110,7 +112,7 @@ kotlin {
         val allJsMain = create("allJsMain") {
             dependencies {
                 implementation("org.jetbrains.kotlin:kotlin-stdlib-js")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:$kotlinxSerializationRuntimeVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-js:$runtimeVersion")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:$kotlinxCoroutinesVersion")
             }
         }
@@ -132,7 +134,6 @@ kotlin {
         val allNativeMain = create("allNativeMain") {
             dependsOn(commonMain)
             dependencies {
-                val runtimeVersion = kotlinxSerializationRuntimeVersion + if (devHost != "macos") "-local" else ""
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime-native:$runtimeVersion")
                 api("org.jetbrains.kotlinx:kotlinx-coroutines-core-native:$kotlinxCoroutinesVersion")
             }

@@ -31,4 +31,17 @@ data class Pokemon(
             val name: String
     )
 
+    fun htmlInfos(): String = """
+        <ul>
+            <li><b>Types</b>: ${type.joinToString()}</li>
+            <li><b>Height</b>: $height, <b>weight</b>: $weight</li>
+            <li><b>Height</b>: $height, <b>weight</b>: $weight</li>
+            <li><b>Candy</b>: $candyName ${if (candyCount > 0) "($candyCount)" else ""}</li>
+            <li><b>Egg</b>: $egg</li>
+            <li><b>Spawn</b>: $spawnsAvg ($spawnTime)</li>
+            ${if (multipliers != null) "<li><b>Multipliers</b>: ${multipliers.joinToString()}</li>" else ""}
+            <li><b>Weaknesses</b>: ${weaknesses.joinToString()}</li>
+        </ul>
+""".trimIndent()
+
 }

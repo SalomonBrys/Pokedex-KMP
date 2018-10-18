@@ -1,14 +1,14 @@
 package org.kodein.sample.pokedex
 
 import org.kodein.di.Kodein
-import org.kodein.di.erased.M
 import org.kodein.di.erased.bind
 import org.kodein.di.erased.instance
 import org.kodein.sample.pokedex.data.Context
 import org.kodein.sample.pokedex.data.Evolutions
 import org.kodein.sample.pokedex.data.PokedexDownloader
 import org.kodein.sample.pokedex.data.Pokemon
-import org.kodein.sample.pokedex.pres.*
+import org.kodein.sample.pokedex.pres.PokemonListMVP
+import org.kodein.sample.pokedex.pres.PokemonMVP
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -134,7 +134,7 @@ class PokedexTest {
         val presenter: PokemonMVP.Presenter by kodein.instance(arg = PokemonMVP.Arg(view, 21))
 
         presenter.start().join()
-        presenter.pokemonSelected("042").join()
+        presenter.pokemonSelected(42).join()
 
         assertEquals(42, goTo)
     }

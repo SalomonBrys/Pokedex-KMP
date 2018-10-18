@@ -1,6 +1,7 @@
 package org.kodein.sample.pokedex
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -8,6 +9,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebView
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_pok.*
 import kotlinx.android.synthetic.main.evol_item.*
@@ -59,7 +61,7 @@ class PokemonActivity : AppCompatActivity(), KodeinAware, PokemonMVP.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pok)
 
-//        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        webView.setBackgroundColor(Color.TRANSPARENT)
 
         GlobalScope.launch(Dispatchers.Main) {
             presenter.start()
@@ -70,6 +72,24 @@ class PokemonActivity : AppCompatActivity(), KodeinAware, PokemonMVP.View {
         title = pokemon.name
         Glide.with(this).load(pokemon.img).into(imageView)
         recyclerView.adapter = Adapter(evolutions)
+
+        webView.loadData(
+                """
+                    <html>
+                    <head>
+                        <style type="text/css">
+                            ul { list-style-type: none; }
+                            li { padding: 3px 0; }
+                        </style>
+                    </head>
+                    <body>
+                        ${pokemon.htmlInfos()}
+                    </body>
+                    </html>
+                """.trimIndent(),
+                "text/html",
+                "UTF-8"
+        )
     }
 
     override fun goToPokemonScreen(name: String, id: Int) {
