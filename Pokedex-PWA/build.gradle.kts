@@ -26,7 +26,6 @@ dependencies {
     compile("org.jetbrains.kotlin:kotlin-test-js")
     compile("org.jetbrains:kotlin-react-dom:16.5.2-pre.55-kotlin-1.2.71")
     compile("org.jetbrains:kotlin-react-router-dom:4.3.1-pre.55-kotlin-1.2.71")
-//    compile("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:0.30.2-eap13")
     compile("org.kodein.sample.pokedex:Pokedex-KMP-webjs:1.0")
     compile("org.kodein.di:kodein-di-core:5.3.0")
     compile("org.kodein.di:kodein-di-erased:5.3.0")
@@ -36,12 +35,6 @@ dependencies {
     kotlinOptions.moduleKind = "commonjs"
     kotlinOptions.sourceMap = true
     kotlinOptions.metaInfo = true
-}
-
-sass {
-    download(Action {
-        version = "1.13.3"
-    })
 }
 
 (tasks["sassCompile"] as SassTask).apply {

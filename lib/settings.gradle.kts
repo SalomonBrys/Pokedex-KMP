@@ -22,6 +22,7 @@ pluginManagement {
         maven(url = "https://dl.bintray.com/salomonbrys/wup-digital-maven")
     }
 }
+
 rootProject.name = "Pokedex-KMP"
 
 enableFeaturePreview("GRADLE_METADATA")
