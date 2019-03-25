@@ -3,8 +3,8 @@ import org.jetbrains.kotlin.gradle.tasks.Kotlin2JsCompile
 
 plugins {
     id("kotlin-platform-js")
-    id("com.github.salomonbrys.gradle.kjs.assemble-web") version "1.0.0"
-    id("com.github.salomonbrys.gradle.sass") version "1.0.0"
+    id("com.github.salomonbrys.gradle.kotlin.js.platform-assemble-web") version "1.2.0"
+    id("com.github.salomonbrys.gradle.sass") version "1.2.0"
 }
 
 repositories {
@@ -40,4 +40,3 @@ val copyHtml = task<Sync>("copyHtml") {
     }
 }
 tasks["assemble"].dependsOn(copyHtml)
-

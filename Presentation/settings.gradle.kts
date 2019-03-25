@@ -5,8 +5,7 @@ pluginManagement {
         eachPlugin {
             when (requested.id.id) {
                 "kotlin-platform-js" -> useModule("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
-                "com.github.salomonbrys.gradle.kjs.assemble-web" -> useModule("com.github.salomonbrys.gradle.kjs:kotlin-js-gradle-utils:${requested.version}")
-                "com.github.salomonbrys.gradle.sass" -> useModule("com.github.salomonbrys.gradle.sass:gradle-sass:${requested.version}")
+                "com.github.salomonbrys.gradle.kotlin.js.platform-assemble-web" -> useModule("com.github.salomonbrys.gradle.kotlin.js:kotlin-js-gradle-utils:${requested.version}")
             }
         }
     }
@@ -16,6 +15,7 @@ pluginManagement {
         jcenter()
         maven(url = "http://dl.bintray.com/kotlin/kotlin-eap")
         maven(url = "https://plugins.gradle.org/m2/")
+        maven(url = "https://dl.bintray.com/salomonbrys/gradle-plugins")
     }
 }
 rootProject.name = "Kotlin MultiPlatform Presentation"
