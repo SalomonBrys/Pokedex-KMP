@@ -1,11 +1,11 @@
-package org.kodein.sample.pokedex.data
+package org.kodein.sample.pokedex
 
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.runBlocking
 import org.kodein.di.Kodein
 import org.kodein.di.erased.bind
 import org.kodein.di.erased.instance
-import org.kodein.sample.pokedex.businessModule
+import org.kodein.sample.pokedex.data.Context
+import org.kodein.sample.pokedex.data.PokedexDownloader
 import org.kodein.sample.pokedex.pres.PokemonListMVP
 import org.kodein.sample.pokedex.pres.PokemonMVP
 

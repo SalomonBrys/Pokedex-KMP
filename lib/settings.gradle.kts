@@ -1,25 +1,25 @@
-val kotlinVersion = "1.3.0-rc-146"
+val kotlinVersion = "1.3.21"
 
 pluginManagement {
     resolutionStrategy {
         eachPlugin {
-            when (requested.id.id) {
-                "kotlin-multiplatform" -> useModule("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
-                "kotlinx-serialization" -> useModule("org.jetbrains.kotlin:kotlin-serialization:$kotlinVersion")
-                "com.moowork.node" -> useModule("com.moowork.gradle:gradle-node-plugin:1.2.0")
-                "com.android.library" -> useModule("com.android.tools.build:gradle:3.2.0")
-                "com.github.salomonbrys.gradle.kjs.js-tests" -> useModule("com.github.salomonbrys.gradle.kjs:js-tests:1.0.0")
+            val id = requested.id.id
+            when {
+                id == "org.jetbrains.kotlin.multiplatform" -> useModule("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+                id == "org.jetbrains.kotlin.plugin.serialization" -> useModule("org.jetbrains.kotlin:kotlin-serialization:$kotlinVersion")
+                id == "kotlinx-serialization" -> useModule("org.jetbrains.kotlin:kotlin-serialization:$kotlinVersion")
+                id == "com.android.library" -> useModule("com.android.tools.build:gradle:3.2.0")
+                id.startsWith("com.github.salomonbrys.gradle.kotlin.js.") -> useModule("com.github.salomonbrys.gradle.kotlin.js:kotlin-js-gradle-utils:1.2.0")
             }
         }
     }
 
     repositories {
-        mavenLocal()
         jcenter()
         google()
-        maven(url = "http://dl.bintray.com/kotlin/kotlin-eap")
+        maven(url = "https://dl.bintray.com/salomonbrys/gradle-plugins")
         maven(url = "https://plugins.gradle.org/m2/")
-        maven(url = "https://dl.bintray.com/salomonbrys/wup-digital-maven")
+        mavenLocal()
     }
 }
 

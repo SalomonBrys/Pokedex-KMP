@@ -2,7 +2,7 @@ package org.kodein.sample.pokedex.data
 
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import kotlinx.serialization.json.JSON
+import kotlinx.serialization.json.Json
 
 expect class Context
 
@@ -20,7 +20,7 @@ class PokedexDownloader(private val context: Context) {
         mutex.withLock {
             pokedex?.let { return it }
             val json = getPokedexJson(context)
-            return JSON.nonstrict.parse(Pokedex.serializer(), json).also { pokedex = it }
+            return Json.nonstrict.parse(Pokedex.serializer(), json).also { pokedex = it }
         }
     }
 

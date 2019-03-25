@@ -28,9 +28,9 @@ dependencies {
     implementation("com.android.support.constraint:constraint-layout:1.1.3")
     implementation("com.github.bumptech.glide:glide:4.8.0")
 
-    implementation("org.kodein.di:kodein-di-core-jvm:5.4.0")
-    implementation("org.kodein.di:kodein-di-erased-jvm:5.4.0")
-    implementation("org.kodein.di:kodein-di-framework-android-core:5.4.0")
+    implementation("org.kodein.di:kodein-di-core-jvm:6.0.0")
+    implementation("org.kodein.di:kodein-di-erased-jvm:6.0.0")
+    implementation("org.kodein.di:kodein-di-framework-android-core:6.0.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:0.30.2-eap13")
 
     implementation("org.kodein.sample.pokedex:Pokedex-KMP-android:1.0")
